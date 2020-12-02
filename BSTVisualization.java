@@ -4,7 +4,7 @@ import javax.swing.border.*;
 import java.awt.*;
 import java.awt.event.*;
 
-public class BSTVisulization extends JFrame implements ActionListener,KeyListener
+public class BSTVisualization extends JFrame implements ActionListener,KeyListener
 {
 	private Node root;
 
@@ -75,7 +75,7 @@ public class BSTVisulization extends JFrame implements ActionListener,KeyListene
      	// y1 = label.getY()+30
 	}
 
-	public BSTVisulization(){
+	public BSTVisualization(){
 		setLayout(null); // layout
 		setSize(1200, 700); 		//frame size
 		
