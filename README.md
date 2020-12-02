@@ -10,7 +10,7 @@
 	* [Deleting Element from BST](#deleting-element-from-binary-search-tree)
 
 ## Introduction
-- Hey there, welcome to BST Visualization repository. In this repository you see how operations in BST Data Structure like delete and add actually works and how BST is construct in visually. So you strong your Binary Search Tree concept.
+- Hey there, welcome to **BST Visualization** repository. In this repository you see how operations in **Binary Search Tree** Data Structure like "Delete" and "Add" actually works and how BST is construct in visually.
 - Currently this program accept only Integer inputs.
 - In future more features like traversing the BST, multiple types of inputs will added.
 
