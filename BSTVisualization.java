@@ -295,20 +295,42 @@ public class BSTVisualization extends JFrame implements ActionListener,KeyListen
 				revalidate();
 				repaint();
 
+				/*
+				 It set another node depending upon the height of left and right sub tree.
+				 */
 				Node nextRoot=null,preRoot=curr;
-				nextRoot=curr.left;
-				while(nextRoot.right!=null){
-					preRoot=nextRoot;
-					nextRoot=nextRoot.right;
-				}
+				int leftSubHeight=calculateHeight(curr.left);
+				int rightSubHeight=calculateHeight(curr.right);
 				
-				if(preRoot!=curr){
-					preRoot.right=nextRoot.left;
-				}else{
-					preRoot.left=nextRoot.left;
+				/* For taking maximum element from the left Side.*/
+				if(leftSubHeight>rightSubHeight){
+					nextRoot=curr.left;
+					while(nextRoot.right!=null){
+						preRoot=nextRoot;
+						nextRoot=nextRoot.right;
+					}
+					
+					if(preRoot!=curr){
+						preRoot.right=nextRoot.left;
+					}else{
+						preRoot.left=nextRoot.left;
+					}
 				}
-				curr.data=nextRoot.data;
+				else{ /* For taking minimum element from the right Side.*/
+					nextRoot=curr.right;
+					while(nextRoot.left!=null){
+						preRoot=nextRoot;
+						nextRoot=nextRoot.left;
+					}
 
+					if(preRoot!=curr){
+						preRoot.left=nextRoot.right;
+					}else{
+						preRoot.right=nextRoot.right;
+					}
+				}
+
+				curr.data=nextRoot.data;
 				reArrangeNode(root, root, getBounds().width/2);
 
 				return data+" deleted successfully.";
@@ -346,15 +368,15 @@ public class BSTVisualization extends JFrame implements ActionListener,KeyListen
 
 	public static void main(String arg[])
 	{
-		BSTVisulization bst=new BSTVisulization();
+		BSTVisualization bst=new BSTVisualization();
 		
-		// bst.add(50);
-		// bst.add(25);
-		// bst.add(35);
-		// bst.add(20);
-		// bst.add(75);
-		// bst.add(100);
-		// bst.add(70);
-		// bst.add(74);
+		bst.add(50);
+		bst.add(25);
+		bst.add(35);
+		bst.add(20);
+		bst.add(75);
+		bst.add(100);
+		bst.add(70);
+		bst.add(74);
 	}
 }
