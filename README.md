@@ -38,7 +38,7 @@
 ### Adding Element in Binary Search Tree
 - We can add element in BST using two ways.
 	1. With using **"Add"** button.
-	2. With pressing **"A"** or **"a"** or **Enter** key in keyboard.
+	2. With pressing **"A"** or **"a"** or **"Enter"** key in keyboard.
 	
 ![Add in BST](https://user-images.githubusercontent.com/55116730/100859012-b9bf1f00-34b4-11eb-85e4-f7507491ef82.gif "Adding Element in BST")
 
