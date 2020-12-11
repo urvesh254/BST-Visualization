@@ -4,8 +4,18 @@ import javax.swing.border.*;
 import java.awt.*;
 import java.awt.event.*;
 
-public class BSTVisualization extends JFrame implements ActionListener, KeyListener {
+public class BSTVisualization extends JFrame implements ActionListener, KeyListener, Runnable {
+	// Tree Root Node.
 	private Node root;
+
+	private Node tempColor;
+	private Color color;
+	private Thread t;
+	private JButton btnAdd, btnDelete;
+	private JTextField tf;
+	private int X = 300, Y = 75;
+	private Graphics2D g2;
+	private Rectangle size;
 
 	//Node Structure
 	private static class Node {
@@ -26,6 +36,10 @@ public class BSTVisualization extends JFrame implements ActionListener, KeyListe
 		void setPoints(int x1, int y1, int x2, int y2) {
 			p = new Points(x1, y1, x2, y2);
 		}
+
+		void setColor(Color c){
+			data.setBackground(c);
+		}
 	}
 
 	//Points structure
@@ -43,12 +57,6 @@ public class BSTVisualization extends JFrame implements ActionListener, KeyListe
 			return "x1 = " + x1 + ", y1 = " + y1 + ", x2 = " + x2 + ", y2 = " + y2;
 		}
 	}
-
-	private JButton btnAdd, btnDelete;
-	private JTextField tf;
-	private int X = 300, Y = 75;
-	private Graphics2D g2;
-	private Rectangle size;
 
 	public void paint(Graphics g) {
 		super.paintComponents(g);
@@ -114,30 +122,46 @@ public class BSTVisualization extends JFrame implements ActionListener, KeyListe
 
 	//Override method.
 	public void actionPerformed(ActionEvent evt) {
-		try {
-			int data = Integer.parseInt(tf.getText());
-			if (evt.getSource() == btnAdd) {
-				add(data);
-			} else {
-				delete(data);
+		if(tf.isEnabled()){
+			try {
+				int data = Integer.parseInt(tf.getText());
+				if (evt.getSource() == btnAdd) {
+					add(data);
+				} else {
+					delete(data);
+				}
+				inorder(root);
+				System.out.println("\nBST Height : " + calculateHeight(root) + "\n");
+				tf.setText("");
+				tf.requestFocusInWindow();
+			} catch (Exception e) {
+				JOptionPane.showMessageDialog(null, "Please Enter Integer.");
 			}
-			inorder(root);
-			System.out.println("\nBST Height : " + calculateHeight(root) + "\n");
-			tf.setText("");
-			tf.requestFocusInWindow();
-		} catch (Exception e) {
-			JOptionPane.showMessageDialog(null, "Please Enter Integer.");
 		}
+	}
+
+	public void run(){
+		tempColor.setColor(color);
+		try{
+			Thread.sleep(500);
+		}catch(Exception e){}
+		tempColor.setColor(Color.green);
+		tf.setEnabled(true);
 	}
 
 	public void keyTyped(KeyEvent evt) {
 		char c = evt.getKeyChar();
-		if (c == 'a' || c == 'A') {
+		if(!tf.isEnabled()){
+			return;
+		}
+		else if (c == 'a' || c == 'A' || c == '\n') {
 			try {
 				String data = tf.getText();
 				evt.consume(); // Not type 'a' or 'A' character in textfield
 				if (!data.isEmpty()) {
 					add(Integer.parseInt(data));
+				}else{
+					throw new Exception();
 				}
 				inorder(root);
 				System.out.println("\nBST Height : " + calculateHeight(root) + "\n");
@@ -170,9 +194,22 @@ public class BSTVisualization extends JFrame implements ActionListener, KeyListe
 	public void keyReleased(KeyEvent evt) {
 	}
 
+	private void changeColor(Node newNode,Color color){
+		tempColor=newNode;
+		this.color=color;
+		try{
+			tf.setEnabled(false);
+			t = new Thread(this,"Color Change");
+			t.start();
+		}catch(Exception ex){
+			JOptionPane.showMessageDialog(null,"Error in Thread.");
+		}
+	}
+
 	//Add element in BST.
 	public void add(int info) {
 		Node newNode = new Node(info);
+
 		if (root == null) {
 			root = newNode;
 			newNode.data.setBounds(600, 10, 40, 40);
@@ -209,29 +246,13 @@ public class BSTVisualization extends JFrame implements ActionListener, KeyListe
 				newNode.p = new Points(x + 40, y + 20, x + X + 20, y + Y + 20);
 			}
 		}
+		
+		changeColor(newNode,new Color(138,41,190));
 
 		paint(getGraphics());
 		add(newNode.data);
 		validate();
 		repaint();
-	}
-
-	//Inorder logic
-	public void inorder(Node root) {
-		if (root == null)
-			return;
-		inorder(root.left);
-		System.out.print(root.data.getText() + " ");
-		inorder(root.right);
-	}
-
-	// Calculate Height of BST using recursive method.
-	public int calculateHeight(Node root) {
-		if (root == null) {
-			return 0;
-		}
-
-		return 1 + Math.max(calculateHeight(root.left), calculateHeight(root.right));
 	}
 
 	// Delete Node from BST
@@ -240,6 +261,7 @@ public class BSTVisualization extends JFrame implements ActionListener, KeyListe
 			JOptionPane.showMessageDialog(null, "BST is empty.");
 		} else {
 			Node curr = root, pre = root;
+
 			while (curr != null) {
 				int info = Integer.parseInt(curr.data.getText());
 				if (info == data) {
@@ -330,6 +352,24 @@ public class BSTVisualization extends JFrame implements ActionListener, KeyListe
 			}
 		}
 		return "";
+	}
+
+	//Inorder logic
+	public void inorder(Node root) {
+		if (root == null)
+			return;
+		inorder(root.left);
+		System.out.print(root.data.getText() + " ");
+		inorder(root.right);
+	}
+
+	// Calculate Height of BST using recursive method.
+	public int calculateHeight(Node root) {
+		if (root == null) {
+			return 0;
+		}
+
+		return 1 + Math.max(calculateHeight(root.left), calculateHeight(root.right));
 	}
 
 	// Rearrange nodes
