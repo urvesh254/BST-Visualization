@@ -4,13 +4,12 @@ import javax.swing.border.*;
 import java.awt.*;
 import java.awt.event.*;
 
-public class BSTVisualization extends JFrame implements ActionListener, KeyListener, Runnable {
+public class BSTVisualization extends JFrame implements ActionListener, KeyListener{
 	// Tree Root Node.
 	private Node root;
 
 	private Node tempColor;
 	private Color color;
-	private Thread t;
 	private JButton btnAdd, btnDelete;
 	private JTextField tf;
 	private int X = 300, Y = 75;
@@ -37,10 +36,6 @@ public class BSTVisualization extends JFrame implements ActionListener, KeyListe
 
 		void setPoints(int x1, int y1, int x2, int y2) {
 			p = new Points(x1, y1, x2, y2);
-		}
-
-		void setColor(Color c){
-			data.setBackground(c);
 		}
 	}
 
@@ -200,16 +195,6 @@ public class BSTVisualization extends JFrame implements ActionListener, KeyListe
 	}
 
 	@Override
-	public void run(){
-		tempColor.setColor(color);
-		try{
-			Thread.sleep(500);
-		}catch(Exception e){}
-		tempColor.setColor(Color.green);
-		tf.setEnabled(true);
-	}
-
-	@Override
 	public void keyTyped(KeyEvent evt) {
 		char c = evt.getKeyChar();
 		if(!tf.isEnabled()){
@@ -253,18 +238,6 @@ public class BSTVisualization extends JFrame implements ActionListener, KeyListe
 	public void keyReleased(KeyEvent evt) {
 	}
 
-	private void changeColor(Node newNode,Color color){
-		tempColor=newNode;
-		this.color=color;
-		try{
-			tf.setEnabled(false);
-			t = new Thread(this,"Color Change");
-			t.start();
-		}catch(Exception ex){
-			JOptionPane.showMessageDialog(null,"Error in Thread.");
-		}
-	}
-
 	//Add element in BST.
 	public void add(int info) {
 		Node newNode = new Node(info);
@@ -306,8 +279,6 @@ public class BSTVisualization extends JFrame implements ActionListener, KeyListe
 			}
 		}
 		
-		changeColor(newNode,new Color(138,41,190));
-
 		// Set all traversal and height of BST
 		setInfo();
 
