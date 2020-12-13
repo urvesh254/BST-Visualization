@@ -16,6 +16,8 @@ public class BSTVisualization extends JFrame implements ActionListener, KeyListe
 	private int X = 300, Y = 75;
 	private Graphics2D g2;
 	private Rectangle size;
+	private JLabel labelInorder,labelPreorder,labelPostorder,labelHeight;
+	private JLabel ansInorder,ansPreorder,ansPostorder,ansHeight;
 
 	//Node Structure
 	private static class Node {
@@ -90,6 +92,18 @@ public class BSTVisualization extends JFrame implements ActionListener, KeyListe
 		size = getBounds();
 		X = size.width / 2;
 
+		// Height of BST label
+		labelHeight = new JLabel("BST Height : ");
+		labelHeight.setFont(new Font("Calibri", Font.BOLD, 20));
+		labelHeight.setBounds(30, 20, 150, 30);
+		add(labelHeight);
+
+		// Height of BST answer
+		ansHeight = new JLabel("0");
+		ansHeight.setFont(new Font("Calibri", Font.BOLD, 20));
+		ansHeight.setBounds(135, 20, 50, 30);
+		add(ansHeight);
+
 		//For geting data.
 		tf = new JTextField("");
 		tf.setFont(new Font("Arial", Font.BOLD, 20));
@@ -111,16 +125,63 @@ public class BSTVisualization extends JFrame implements ActionListener, KeyListe
 		btnDelete.addActionListener(this);
 		add(btnDelete);
 
+
+		// Inorder label
+		labelInorder = new JLabel("Inorder :");
+		labelInorder.setFont(new Font("Times New Roman", Font.BOLD, 20));
+		labelInorder.setBounds(30, 450, 100, 30);
+		add(labelInorder);
+
+		// Inorder traversal answer
+		ansInorder = new JLabel("BST is empty.");
+		ansInorder.setFont(new Font("Arial", Font.PLAIN, 18));
+		/* For Border and Background. */
+		// ansInorder.setOpaque(true);
+		// ansInorder.setBackground(Color.white);
+		// ansInorder.setBorder(new LineBorder(Color.black));
+		ansInorder.setBounds(30, 480, 1130, 24);
+		add(ansInorder);
+
+		// Preorder label
+		labelPreorder = new JLabel("Preorder :");
+		labelPreorder.setFont(new Font("Times New Roman", Font.BOLD, 20));
+		labelPreorder.setBounds(30, 520, 100, 30);
+		add(labelPreorder);
+
+		// Preorder traversal answer
+		ansPreorder = new JLabel("BST is empty.");
+		ansPreorder.setFont(new Font("Arial", Font.PLAIN, 18));
+		// ansPreorder.setOpaque(true);
+		// ansPreorder.setBackground(Color.white);
+		// ansPreorder.setBorder(new LineBorder(Color.black));
+		ansPreorder.setBounds(30, 550, 1130, 24);
+		add(ansPreorder);
+
+		// Postorder label
+		labelPostorder = new JLabel("Postorder :");
+		labelPostorder.setFont(new Font("Times New Roman", Font.BOLD, 20));
+		labelPostorder.setBounds(30, 590, 100, 30);
+		add(labelPostorder);
+
+		// Postorder traversal answer
+		ansPostorder = new JLabel("BST is empty.");
+		ansPostorder.setFont(new Font("Arial", Font.PLAIN, 18));
+		// ansPostorder.setOpaque(true);
+		// ansPostorder.setBackground(Color.white);
+		// ansPostorder.setBorder(new LineBorder(Color.black));
+		ansPostorder.setBounds(30, 620, 1130, 24);
+		add(ansPostorder);
+
 		tf.requestFocusInWindow();
 
-		setTitle("Binary Search Tree Visulization"); //Title Frame
+		setTitle("Binary Search Tree Visualization"); //Title Frame
 		setResizable(false);
 		setLocationRelativeTo(null);
 		setVisible(true);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
 
-	//Override method.
+	@Override
 	public void actionPerformed(ActionEvent evt) {
 		if(tf.isEnabled()){
 			try {
@@ -130,8 +191,6 @@ public class BSTVisualization extends JFrame implements ActionListener, KeyListe
 				} else {
 					delete(data);
 				}
-				inorder(root);
-				System.out.println("\nBST Height : " + calculateHeight(root) + "\n");
 				tf.setText("");
 				tf.requestFocusInWindow();
 			} catch (Exception e) {
@@ -140,6 +199,7 @@ public class BSTVisualization extends JFrame implements ActionListener, KeyListe
 		}
 	}
 
+	@Override
 	public void run(){
 		tempColor.setColor(color);
 		try{
@@ -149,12 +209,13 @@ public class BSTVisualization extends JFrame implements ActionListener, KeyListe
 		tf.setEnabled(true);
 	}
 
+	@Override
 	public void keyTyped(KeyEvent evt) {
 		char c = evt.getKeyChar();
 		if(!tf.isEnabled()){
 			return;
 		}
-		else if (c == 'a' || c == 'A' || c == '\n') {
+		else if (c == 'a' || c == 'A' || c == '\n' || c == '+') {
 			try {
 				String data = tf.getText();
 				evt.consume(); // Not type 'a' or 'A' character in textfield
@@ -163,22 +224,18 @@ public class BSTVisualization extends JFrame implements ActionListener, KeyListe
 				}else{
 					throw new Exception();
 				}
-				inorder(root);
-				System.out.println("\nBST Height : " + calculateHeight(root) + "\n");
 				tf.requestFocusInWindow();
 			} catch (Exception e) {
 				JOptionPane.showMessageDialog(null, "Please Enter Integer.");
 			}
 			tf.setText("");
-		} else if (c == 'd' || c == 'D') {
+		} else if (c == 'd' || c == 'D' || c == '-') {
 			try {
 				String data = tf.getText();
 				evt.consume(); // Not type 'd' or 'D' character in textfield
 				if (!data.isEmpty()) {
 					delete(Integer.parseInt(data));
 				}
-				inorder(root);
-				System.out.println("\nBST Height : " + calculateHeight(root) + "\n");
 				tf.requestFocusInWindow();
 			} catch (Exception e) {
 				JOptionPane.showMessageDialog(null, "Please Enter Integer.");
@@ -188,9 +245,11 @@ public class BSTVisualization extends JFrame implements ActionListener, KeyListe
 			evt.consume();
 	}
 
+	@Override
 	public void keyPressed(KeyEvent evt) {
 	}
 
+	@Override
 	public void keyReleased(KeyEvent evt) {
 	}
 
@@ -249,6 +308,9 @@ public class BSTVisualization extends JFrame implements ActionListener, KeyListe
 		
 		changeColor(newNode,new Color(138,41,190));
 
+		// Set all traversal and height of BST
+		setInfo();
+
 		paint(getGraphics());
 		add(newNode.data);
 		validate();
@@ -256,7 +318,7 @@ public class BSTVisualization extends JFrame implements ActionListener, KeyListe
 	}
 
 	// Delete Node from BST
-	public String delete(int data) {
+	public void delete(int data) {
 		if (root == null) {
 			JOptionPane.showMessageDialog(null, "BST is empty.");
 		} else {
@@ -277,6 +339,7 @@ public class BSTVisualization extends JFrame implements ActionListener, KeyListe
 
 			if (curr == null) { // data is not find.
 				JOptionPane.showMessageDialog(null, data + " is not available.");
+				return;
 			} else if (curr.left == null || curr.right == null) { // data has 0 or 1 child
 
 				this.remove(curr.data);
@@ -303,8 +366,6 @@ public class BSTVisualization extends JFrame implements ActionListener, KeyListe
 
 				reArrangeNode(root, root, getBounds().width / 2);
 
-				return data + " deleted successfully.";
-
 			} else { // data has 2 child.
 
 				this.remove(curr.data);
@@ -318,7 +379,7 @@ public class BSTVisualization extends JFrame implements ActionListener, KeyListe
 				int leftSubHeight = calculateHeight(curr.left);
 				int rightSubHeight = calculateHeight(curr.right);
 
-				/* For taking maximum element from the left Side.*/
+				/* For taking maximum element from the left Side. */
 				if (leftSubHeight > rightSubHeight) {
 					nextRoot = curr.left;
 					while (nextRoot.right != null) {
@@ -347,24 +408,56 @@ public class BSTVisualization extends JFrame implements ActionListener, KeyListe
 
 				curr.data = nextRoot.data;
 				reArrangeNode(root, root, getBounds().width / 2);
-
-				return data + " deleted successfully.";
 			}
 		}
-		return "";
+		
+		// Set all traversal and height of BST
+		setInfo();
+	}
+
+	// Set all traversal and height of BST
+	private void setInfo(){
+		int height = calculateHeight(root);
+
+		if(height == 0){
+			ansInorder.setText("BST is empty.");
+			ansPostorder.setText("BST is empty.");
+			ansPreorder.setText("BST is empty.");
+		} else {
+			ansInorder.setText(inorder(root));
+			ansPostorder.setText(postorder(root));
+			ansPreorder.setText(preorder(root));
+		}
+
+		ansHeight.setText(height+"");
 	}
 
 	//Inorder logic
-	public void inorder(Node root) {
+	private String inorder(Node root) {
 		if (root == null)
-			return;
-		inorder(root.left);
-		System.out.print(root.data.getText() + " ");
-		inorder(root.right);
+			return "";
+
+		return inorder(root.left) + root.data.getText() + " " + inorder(root.right);
+	}
+
+	//Preorder logic
+	public String preorder(Node root) {
+		if (root == null)
+			return "";
+
+		return root.data.getText() + " " + preorder(root.left) + preorder(root.right);
+	}
+
+	//Postorder logic
+	public String postorder(Node root) {
+		if (root == null)
+			return "";
+
+		return postorder(root.left) + postorder(root.right) + root.data.getText() + " ";
 	}
 
 	// Calculate Height of BST using recursive method.
-	public int calculateHeight(Node root) {
+	private int calculateHeight(Node root) {
 		if (root == null) {
 			return 0;
 		}
