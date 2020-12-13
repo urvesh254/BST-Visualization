@@ -12,6 +12,7 @@
 ## Introduction
 - Hey there, welcome to **BST Visualization** repository. In this repository you see how operations in **Binary Search Tree** Data Structure like "Delete" and "Add" actually works and how BST is construct in visually.
 - Currently this program accept only Integer inputs.
+- **"Suggestions are welcome"**, put your suggestions in issue.
 
 ## Prerequisite 
 -   For run **BST Vitalization** in you system you want to install some softwares.
