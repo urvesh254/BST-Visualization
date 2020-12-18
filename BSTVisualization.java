@@ -200,7 +200,7 @@ public class BSTVisualization extends JFrame implements ActionListener, KeyListe
 		if(!tf.isEnabled()){
 			return;
 		}
-		else if (c == 'a' || c == 'A' || c == '\n' || c == '+') {
+		else if (c == 'a' || c == 'A' || c == '\n') {
 			try {
 				String data = tf.getText();
 				evt.consume(); // Not type 'a' or 'A' character in textfield
@@ -214,7 +214,7 @@ public class BSTVisualization extends JFrame implements ActionListener, KeyListe
 				JOptionPane.showMessageDialog(null, "Please Enter Integer.");
 			}
 			tf.setText("");
-		} else if (c == 'd' || c == 'D' || c == '-') {
+		} else if (c == 'd' || c == 'D') {
 			try {
 				String data = tf.getText();
 				evt.consume(); // Not type 'd' or 'D' character in textfield
