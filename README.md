@@ -38,14 +38,14 @@
 ### Adding Element in Binary Search Tree
 - We can add element in BST using two ways.
 	1. With using **"Add"** button.
-	2. With pressing **"A"** or **"a"** or **"Enter"** or **"+"** key in keyboard.
+	2. With pressing **"A"** or **"a"** or **"Enter"** key in keyboard.
 	
 ![Add in BST](https://user-images.githubusercontent.com/55116730/102015789-a6009c00-3d83-11eb-8ae9-bf47b3fd6c67.gif "Adding Element in BST")
 
 ### Deleting Element from Binary Search Tree
 - We can also delete element in BST using two ways.
 	1. With using **"Delete"** button.
-	2. With pressing **"D"** or **"d"** or **"-"** key in keyboard.
+	2. With pressing **"D"** or **"d"** key in keyboard.
 
 ![Delete in BST](https://user-images.githubusercontent.com/55116730/102015791-a9942300-3d83-11eb-9c0f-4befc0288583.gif)
 - If entered element is no present or Binary Search Tree is empty then it throws an popup window.
