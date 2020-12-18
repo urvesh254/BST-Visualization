@@ -4,7 +4,7 @@ import javax.swing.border.*;
 import java.awt.*;
 import java.awt.event.*;
 
-public class BSTVisualization extends JFrame implements ActionListener, KeyListener{
+public class BSTVisualization extends JFrame implements ActionListener, KeyListener {
 	// Tree Root Node.
 	private Node root;
 
@@ -15,8 +15,8 @@ public class BSTVisualization extends JFrame implements ActionListener, KeyListe
 	private int X = 300, Y = 75;
 	private Graphics2D g2;
 	private Rectangle size;
-	private JLabel labelInorder,labelPreorder,labelPostorder,labelHeight;
-	private JLabel ansInorder,ansPreorder,ansPostorder,ansHeight;
+	private JLabel labelInorder, labelPreorder, labelPostorder, labelHeight;
+	private JLabel ansInorder, ansPreorder, ansPostorder, ansHeight;
 
 	//Node Structure
 	private static class Node {
@@ -120,7 +120,6 @@ public class BSTVisualization extends JFrame implements ActionListener, KeyListe
 		btnDelete.addActionListener(this);
 		add(btnDelete);
 
-
 		// Inorder label
 		labelInorder = new JLabel("Inorder :");
 		labelInorder.setFont(new Font("Times New Roman", Font.BOLD, 20));
@@ -178,7 +177,7 @@ public class BSTVisualization extends JFrame implements ActionListener, KeyListe
 
 	@Override
 	public void actionPerformed(ActionEvent evt) {
-		if(tf.isEnabled()){
+		if (tf.isEnabled()) {
 			try {
 				int data = Integer.parseInt(tf.getText());
 				if (evt.getSource() == btnAdd) {
@@ -197,16 +196,15 @@ public class BSTVisualization extends JFrame implements ActionListener, KeyListe
 	@Override
 	public void keyTyped(KeyEvent evt) {
 		char c = evt.getKeyChar();
-		if(!tf.isEnabled()){
+		if (!tf.isEnabled()) {
 			return;
-		}
-		else if (c == 'a' || c == 'A' || c == '\n') {
+		} else if (c == 'a' || c == 'A' || c == '\n') {
 			try {
 				String data = tf.getText();
 				evt.consume(); // Not type 'a' or 'A' character in textfield
 				if (!data.isEmpty()) {
 					add(Integer.parseInt(data));
-				}else{
+				} else {
 					throw new Exception();
 				}
 				tf.requestFocusInWindow();
@@ -278,7 +276,7 @@ public class BSTVisualization extends JFrame implements ActionListener, KeyListe
 				newNode.p = new Points(x + 40, y + 20, x + X + 20, y + Y + 20);
 			}
 		}
-		
+
 		// Set all traversal and height of BST
 		setInfo();
 
@@ -381,16 +379,16 @@ public class BSTVisualization extends JFrame implements ActionListener, KeyListe
 				reArrangeNode(root, root, getBounds().width / 2);
 			}
 		}
-		
+
 		// Set all traversal and height of BST
 		setInfo();
 	}
 
 	// Set all traversal and height of BST
-	private void setInfo(){
+	private void setInfo() {
 		int height = calculateHeight(root);
 
-		if(height == 0){
+		if (height == 0) {
 			ansInorder.setText("BST is empty.");
 			ansPostorder.setText("BST is empty.");
 			ansPreorder.setText("BST is empty.");
@@ -400,7 +398,7 @@ public class BSTVisualization extends JFrame implements ActionListener, KeyListe
 			ansPreorder.setText(preorder(root));
 		}
 
-		ansHeight.setText(height+"");
+		ansHeight.setText(height + "");
 	}
 
 	//Inorder logic
