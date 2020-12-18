@@ -4,6 +4,7 @@
 ## Table of contents
 * [Introduction](#introduction)
 * [Prerequisite](#prerequisite)
+* [Download](#download)
 * [Execution](#execution)
 * [Explanation](#explanation)
 	* [Adding element in BST](#adding-element-in-binary-search-tree)
@@ -22,6 +23,10 @@
 		 - [NetBeans](https://netbeans.org/ "NetBeans IDE")
 		 - [Atom](https://atom.io/ "Atom")
 		 - [Notepad++](https://notepad-plus-plus.org/downloads/ "Notepad++")
+
+## Download
+- Download .jar file form [Latest Releases](https://github.com/urvesh254/BST-Visualization/releases "Download")
+- **Note**: For run this .jar file you want to complete [Prerequisite](#prerequisite) firsts.
 
 ## Execution
 - Open CMD or terminal where you put BSTVisualization.java file.
