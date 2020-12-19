@@ -8,7 +8,6 @@ public class BSTVisualization extends JFrame implements ActionListener, KeyListe
 	// Tree Root Node.
 	private Node root;
 
-	private Node tempColor;
 	private Color color;
 	private JButton btnAdd, btnDelete;
 	private JTextField tf;
@@ -333,8 +332,6 @@ public class BSTVisualization extends JFrame implements ActionListener, KeyListe
 					}
 				}
 
-				reArrangeNode(root, root, getBounds().width / 2);
-
 			} else { // data has 2 child.
 
 				this.remove(curr.data);
@@ -376,8 +373,8 @@ public class BSTVisualization extends JFrame implements ActionListener, KeyListe
 				}
 
 				curr.data = nextRoot.data;
-				reArrangeNode(root, root, getBounds().width / 2);
 			}
+			reArrangeNode(root, root, getBounds().width / 2);
 		}
 
 		// Set all traversal and height of BST
