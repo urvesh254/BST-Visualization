@@ -1,6 +1,7 @@
+// package Testing;
+
 import java.util.*;
 import javax.swing.*;
-import javax.swing.border.*;
 import java.awt.*;
 import java.awt.event.*;
 
@@ -8,7 +9,8 @@ public class BSTVisualization extends JFrame implements ActionListener, KeyListe
 	// Tree Root Node.
 	private Node root;
 
-	private Color color;
+	// private Color color;
+	private JPanel treePanel, infoPanel;
 	private JButton btnAdd, btnDelete;
 	private JTextField tf;
 	private int X = 300, Y = 75;
@@ -33,7 +35,7 @@ public class BSTVisualization extends JFrame implements ActionListener, KeyListe
 			p = null;
 		}
 
-		void setPoints(int x1, int y1, int x2, int y2) {
+		private void setPoints(int x1, int y1, int x2, int y2) {
 			p = new Points(x1, y1, x2, y2);
 		}
 	}
@@ -101,92 +103,101 @@ public class BSTVisualization extends JFrame implements ActionListener, KeyListe
 	}
 
 	public BSTVisualization() {
-		setLayout(null); // layout
+		// Initialize the frame. 
+		initialize();
+	}
+
+	private void initialize() {
+
+		// setLayout(null); // layout
 		setSize(1200, 700); //frame size
 
 		size = getBounds();
 		X = size.width / 2;
 
+		treePanel = new JPanel(null);
+		treePanel.setPreferredSize(new Dimension(size.width, size.height - 200));
+
+		infoPanel = new JPanel();
+		infoPanel.setLayout(new BoxLayout(infoPanel, BoxLayout.Y_AXIS));
+		infoPanel.setPreferredSize(new Dimension(size.width, 200));
+		infoPanel.setBorder(BorderFactory.createLineBorder(Color.black, 3));
+
 		// Height of BST label
 		labelHeight = new JLabel("BST Height : ");
 		labelHeight.setFont(new Font("Calibri", Font.BOLD, 20));
 		labelHeight.setBounds(30, 20, 150, 30);
-		add(labelHeight);
+		treePanel.add(labelHeight);
 
 		// Height of BST answer
 		ansHeight = new JLabel("0");
 		ansHeight.setFont(new Font("Calibri", Font.BOLD, 20));
 		ansHeight.setBounds(135, 20, 50, 30);
-		add(ansHeight);
+		treePanel.add(ansHeight);
 
 		//For geting data.
 		tf = new JTextField("");
 		tf.setFont(new Font("Arial", Font.BOLD, 20));
 		tf.setBounds(size.width - 300, 20, 150, 30);
 		tf.addKeyListener(this);
-		add(tf);
+		treePanel.add(tf);
 
 		//Add Button
 		btnAdd = new JButton("Add");
 		btnAdd.setFont(new Font("Arial", Font.BOLD, 20));
 		btnAdd.setBounds(size.width - 130, 20, 100, 30);
 		btnAdd.addActionListener(this);
-		add(btnAdd);
+		treePanel.add(btnAdd);
 
 		//Delete Button
 		btnDelete = new JButton("Delete");
 		btnDelete.setFont(new Font("Arial", Font.BOLD, 20));
 		btnDelete.setBounds(size.width - 130, 60, 100, 30);
 		btnDelete.addActionListener(this);
-		add(btnDelete);
+		treePanel.add(btnDelete);
 
 		// Inorder label
 		labelInorder = new JLabel("Inorder :");
 		labelInorder.setFont(new Font("Times New Roman", Font.BOLD, 20));
-		labelInorder.setBounds(30, 450, 100, 30);
-		add(labelInorder);
+		infoPanel.add(labelInorder);
+
+		infoPanel.add(Box.createRigidArea(new Dimension(7, 5)));
 
 		// Inorder traversal answer
 		ansInorder = new JLabel("BST is empty.");
 		ansInorder.setFont(new Font("Arial", Font.PLAIN, 18));
-		/* For Border and Background. */
-		// ansInorder.setOpaque(true);
-		// ansInorder.setBackground(Color.white);
-		// ansInorder.setBorder(new LineBorder(Color.black));
-		ansInorder.setBounds(30, 480, 1130, 24);
-		add(ansInorder);
+		infoPanel.add(ansInorder);
+
+		infoPanel.add(Box.createRigidArea(new Dimension(7, 15)));
 
 		// Preorder label
 		labelPreorder = new JLabel("Preorder :");
 		labelPreorder.setFont(new Font("Times New Roman", Font.BOLD, 20));
-		labelPreorder.setBounds(30, 520, 100, 30);
-		add(labelPreorder);
+		infoPanel.add(labelPreorder);
+
+		infoPanel.add(Box.createRigidArea(new Dimension(7, 5)));
 
 		// Preorder traversal answer
 		ansPreorder = new JLabel("BST is empty.");
 		ansPreorder.setFont(new Font("Arial", Font.PLAIN, 18));
-		// ansPreorder.setOpaque(true);
-		// ansPreorder.setBackground(Color.white);
-		// ansPreorder.setBorder(new LineBorder(Color.black));
-		ansPreorder.setBounds(30, 550, 1130, 24);
-		add(ansPreorder);
+		infoPanel.add(ansPreorder);
+
+		infoPanel.add(Box.createRigidArea(new Dimension(7, 15)));
 
 		// Postorder label
 		labelPostorder = new JLabel("Postorder :");
 		labelPostorder.setFont(new Font("Times New Roman", Font.BOLD, 20));
-		labelPostorder.setBounds(30, 590, 100, 30);
-		add(labelPostorder);
+		infoPanel.add(labelPostorder);
 
 		// Postorder traversal answer
 		ansPostorder = new JLabel("BST is empty.");
 		ansPostorder.setFont(new Font("Arial", Font.PLAIN, 18));
-		// ansPostorder.setOpaque(true);
-		// ansPostorder.setBackground(Color.white);
-		// ansPostorder.setBorder(new LineBorder(Color.black));
-		ansPostorder.setBounds(30, 620, 1130, 24);
-		add(ansPostorder);
+		infoPanel.add(ansPostorder);
 
 		tf.requestFocusInWindow();
+
+		add(treePanel, BorderLayout.CENTER);
+		add(infoPanel, BorderLayout.SOUTH);
 
 		setTitle("Binary Search Tree Visualization"); //Title Frame
 		setResizable(false);
@@ -300,8 +311,11 @@ public class BSTVisualization extends JFrame implements ActionListener, KeyListe
 		// Set all traversal and height of BST
 		setInfo();
 
-		paint(getGraphics());
-		add(newNode.data);
+		paint(treePanel.getGraphics());
+		treePanel.add(newNode.data);
+		treePanel.validate();
+		treePanel.repaint();
+
 		validate();
 		repaint();
 	}
@@ -331,8 +345,11 @@ public class BSTVisualization extends JFrame implements ActionListener, KeyListe
 				return;
 			} else if (curr.left == null || curr.right == null) { // data has 0 or 1 child
 
-				this.remove(curr.data);
-				revalidate();
+				treePanel.remove(curr.data);
+				treePanel.revalidate();
+				treePanel.repaint();
+
+				validate();
 				repaint();
 
 				if (curr != root) {
@@ -355,8 +372,11 @@ public class BSTVisualization extends JFrame implements ActionListener, KeyListe
 
 			} else { // data has 2 child.
 
-				this.remove(curr.data);
-				revalidate();
+				treePanel.remove(curr.data);
+				treePanel.revalidate();
+				treePanel.repaint();
+
+				validate();
 				repaint();
 
 				/*
@@ -483,13 +503,13 @@ public class BSTVisualization extends JFrame implements ActionListener, KeyListe
 	public static void main(String arg[]) {
 		BSTVisualization bst = new BSTVisualization();
 
-		bst.add(50);
-		bst.add(25);
-		bst.add(35);
-		bst.add(20);
-		bst.add(75);
-		bst.add(100);
-		bst.add(70);
-		bst.add(74);
+		// bst.add(50);
+		// bst.add(25);
+		// bst.add(35);
+		// bst.add(20);
+		// bst.add(75);
+		// bst.add(100);
+		// bst.add(70);
+		// bst.add(74);
 	}
 }
