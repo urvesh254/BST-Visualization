@@ -11,6 +11,7 @@ public class BSTVisualization extends JFrame implements ActionListener, KeyListe
 
 	// private Color color;
 	private JPanel topPanel, treePanel, infoPanel;
+	private JPanel topLeftPanel, topRightPanel;
 	private JButton btnAdd, btnDelete;
 	private JTextField tf;
 	private int X = 300, Y = 75;
@@ -33,10 +34,6 @@ public class BSTVisualization extends JFrame implements ActionListener, KeyListe
 			data.setOpaque(true);
 			data.setBackground(Color.green);
 			p = null;
-		}
-
-		private void setPoints(int x1, int y1, int x2, int y2) {
-			p = new Points(x1, y1, x2, y2);
 		}
 	}
 
@@ -86,8 +83,7 @@ public class BSTVisualization extends JFrame implements ActionListener, KeyListe
 		Stack<Node> s = new Stack<>();
 		Node curr = root;
 		Points pts;
-		int offcet = 45;
-
+		int offset = topPanel.getBounds().height;
 		while (!s.isEmpty() || curr != null) {
 			while (curr != null) {
 				s.push(curr);
@@ -96,7 +92,7 @@ public class BSTVisualization extends JFrame implements ActionListener, KeyListe
 			if (!s.isEmpty())
 				curr = s.pop();
 			pts = curr.p;
-			g2.drawLine(pts.x1 + 7, pts.y1 + 30 + offcet, pts.x2 + 3, pts.y2 + 10 + offcet);
+			g2.drawLine(pts.x1 + 7, pts.y1 + 30 + offset, pts.x2 + 3, pts.y2 + 10 + offset);
 			curr = curr.right;
 		}
 
@@ -117,53 +113,53 @@ public class BSTVisualization extends JFrame implements ActionListener, KeyListe
 		size = getBounds();
 		X = size.width / 2;
 
-		topPanel = new JPanel();
-		topPanel.setBorder(BorderFactory.createLineBorder(Color.black, 1));
+		topPanel = new JPanel(new BorderLayout());
+		Rectangle top = topPanel.getBounds();
+
+		topLeftPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 10));
+		topPanel.add(topLeftPanel, BorderLayout.WEST);
+
+		topRightPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+		topPanel.add(topRightPanel, BorderLayout.EAST);
 
 		treePanel = new JPanel(null);
 		treePanel.setPreferredSize(new Dimension(size.width, size.height - 300));
-		treePanel.setBorder(BorderFactory.createLineBorder(Color.black, 1));
 
 		infoPanel = new JPanel();
 		infoPanel.setLayout(new BoxLayout(infoPanel, BoxLayout.Y_AXIS));
 		infoPanel.setPreferredSize(new Dimension(size.width, 200));
-		infoPanel.setBorder(BorderFactory.createLineBorder(Color.black, 1));
 
 		// Height of BST label
 		labelHeight = new JLabel("BST Height : ");
 		labelHeight.setFont(new Font("Calibri", Font.BOLD, 20));
-		// labelHeight.setBounds(30, 20, 150, 30);
-		// labelHeight.setPreferredSize(new Dimension(150, 30));
-		topPanel.add(labelHeight);
+		topLeftPanel.add(labelHeight);
 
 		// Height of BST answer
 		ansHeight = new JLabel("0");
 		ansHeight.setFont(new Font("Calibri", Font.BOLD, 20));
-		// ansHeight.setBounds(135, 20, 50, 30);
 		ansHeight.setPreferredSize(new Dimension(50, 30));
-		topPanel.add(ansHeight);
+		topLeftPanel.add(ansHeight);
 
 		//For geting data.
 		tf = new JTextField("");
 		tf.setFont(new Font("Arial", Font.BOLD, 20));
-		// tf.setBounds(size.width - 300, 20, 150, 30);
 		tf.setPreferredSize(new Dimension(150, 30));
 		tf.addKeyListener(this);
-		topPanel.add(tf);
+		topRightPanel.add(tf);
 
 		//Add Button
 		btnAdd = new JButton("Add");
 		btnAdd.setFont(new Font("Arial", Font.BOLD, 20));
-		btnAdd.setBounds(size.width - 130, 20, 100, 30);
+		// btnAdd.setBounds(size.width - 130, 20, 100, 30);
 		btnAdd.addActionListener(this);
-		topPanel.add(btnAdd);
+		topRightPanel.add(btnAdd);
 
 		//Delete Button
 		btnDelete = new JButton("Delete");
 		btnDelete.setFont(new Font("Arial", Font.BOLD, 20));
-		btnDelete.setBounds(size.width - 130, 60, 100, 30);
+		// btnDelete.setBounds(size.width - 130, 60, 100, 30);
 		btnDelete.addActionListener(this);
-		topPanel.add(btnDelete);
+		topRightPanel.add(btnDelete);
 
 		// Inorder label
 		labelInorder = new JLabel("Inorder :");
@@ -287,25 +283,25 @@ public class BSTVisualization extends JFrame implements ActionListener, KeyListe
 			newNode.p = new Points(0, 0, 0, 0);
 		} else {
 			Node curr = root, pre = root;
-			int temp;
-			X = getBounds().width / 2;
+			int currData;
+			X = treePanel.getBounds().width / 2;
 			while (curr != null) {
 				pre = curr;
-				temp = Integer.parseInt(curr.data.getText());
-				if (info == temp) {
+				currData = Integer.parseInt(curr.data.getText());
+				if (info == currData) {
 					JOptionPane.showMessageDialog(null, info + " is already exist.");
 					return;
-				} else if (temp > info) {
+				} else if (currData > info) {
 					curr = curr.left;
 				} else {
 					curr = curr.right;
 				}
 				X /= 2;
 			}
-			temp = Integer.parseInt(pre.data.getText());
+			currData = Integer.parseInt(pre.data.getText());
 			int x = pre.data.getX();
 			int y = pre.data.getY();
-			if (temp > info) {
+			if (currData > info) {
 				pre.left = newNode;
 				newNode.data.setBounds(x - X, y + Y, 40, 40);
 				// x1=x;y1=y+20;x2=x-X+20;y2=y+Y+20;
@@ -321,7 +317,7 @@ public class BSTVisualization extends JFrame implements ActionListener, KeyListe
 		// Set all traversal and height of BST
 		setInfo();
 
-		paint(treePanel.getGraphics());
+		// paint(treePanel.getGraphics());
 		treePanel.add(newNode.data);
 		treePanel.validate();
 		treePanel.repaint();
@@ -356,7 +352,7 @@ public class BSTVisualization extends JFrame implements ActionListener, KeyListe
 			} else if (curr.left == null || curr.right == null) { // data has 0 or 1 child
 
 				treePanel.remove(curr.data);
-				treePanel.revalidate();
+				treePanel.validate();
 				treePanel.repaint();
 
 				validate();
@@ -383,7 +379,7 @@ public class BSTVisualization extends JFrame implements ActionListener, KeyListe
 			} else { // data has 2 child.
 
 				treePanel.remove(curr.data);
-				treePanel.revalidate();
+				treePanel.validate();
 				treePanel.repaint();
 
 				validate();
@@ -491,7 +487,6 @@ public class BSTVisualization extends JFrame implements ActionListener, KeyListe
 
 		if (root == node) {
 			node.data.setBounds(X, 10, 40, 40);
-			node.p = new Points(0, 0, 0, 0);
 		} else {
 			int x = pre.data.getX();
 			int y = pre.data.getY();
@@ -513,13 +508,13 @@ public class BSTVisualization extends JFrame implements ActionListener, KeyListe
 	public static void main(String arg[]) {
 		BSTVisualization bst = new BSTVisualization();
 
-		// bst.add(50);
-		// bst.add(25);
-		// bst.add(35);
-		// bst.add(20);
-		// bst.add(75);
-		// bst.add(100);
-		// bst.add(70);
-		// bst.add(74);
+		bst.add(50);
+		bst.add(25);
+		bst.add(35);
+		bst.add(20);
+		bst.add(75);
+		bst.add(100);
+		bst.add(70);
+		bst.add(74);
 	}
 }
