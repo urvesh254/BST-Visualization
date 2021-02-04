@@ -54,6 +54,27 @@ public class BSTVisualization extends JFrame implements ActionListener, KeyListe
 		}
 	}
 
+	// For storing the Height of the root,left and right child height.
+	private static class Height {
+		int root, left, right;
+
+		Height() {
+			this.root = 0;
+			this.left = 0;
+			this.right = 0;
+		}
+
+		Height(int left, int right) {
+			this.left = left;
+			this.right = right;
+		}
+
+		@Override
+		public String toString() {
+			return Integer.toString(this.root);
+		}
+	}
+
 	public void paint(Graphics g) {
 		super.paintComponents(g);
 
@@ -342,11 +363,10 @@ public class BSTVisualization extends JFrame implements ActionListener, KeyListe
 				 It set another node depending upon the height of left and right sub tree.
 				 */
 				Node nextRoot = null, preRoot = curr;
-				int leftSubHeight = calculateHeight(curr.left);
-				int rightSubHeight = calculateHeight(curr.right);
+				Height height = calculateHeight(curr);
 
 				/* For taking maximum element from the left Side. */
-				if (leftSubHeight > rightSubHeight) {
+				if (height.left > height.right) {
 					nextRoot = curr.left;
 					while (nextRoot.right != null) {
 						preRoot = nextRoot;
@@ -383,9 +403,9 @@ public class BSTVisualization extends JFrame implements ActionListener, KeyListe
 
 	// Set all traversal and height of BST
 	private void setInfo() {
-		int height = calculateHeight(root);
+		Height height = calculateHeight(root);
 
-		if (height == 0) {
+		if (height.root == 0) {
 			ansInorder.setText("BST is empty.");
 			ansPostorder.setText("BST is empty.");
 			ansPreorder.setText("BST is empty.");
@@ -395,7 +415,7 @@ public class BSTVisualization extends JFrame implements ActionListener, KeyListe
 			ansPreorder.setText(preorder(root));
 		}
 
-		ansHeight.setText(height + "");
+		ansHeight.setText(height.root + "");
 	}
 
 	//Inorder logic
@@ -423,12 +443,15 @@ public class BSTVisualization extends JFrame implements ActionListener, KeyListe
 	}
 
 	// Calculate Height of BST using recursive method.
-	private int calculateHeight(Node root) {
+	private Height calculateHeight(Node root) {
 		if (root == null) {
-			return 0;
+			return new Height();
 		}
-
-		return 1 + Math.max(calculateHeight(root.left), calculateHeight(root.right));
+		Height leftChild = calculateHeight(root.left);
+		Height rightChild = calculateHeight(root.right);
+		Height current = new Height(leftChild.root, rightChild.root);
+		current.root = 1 + Math.max(leftChild.root, rightChild.root);
+		return current;
 	}
 
 	// Rearrange nodes
@@ -460,13 +483,13 @@ public class BSTVisualization extends JFrame implements ActionListener, KeyListe
 	public static void main(String arg[]) {
 		BSTVisualization bst = new BSTVisualization();
 
-		// bst.add(50);
-		// bst.add(25);
-		// bst.add(35);
-		// bst.add(20);
-		// bst.add(75);
-		// bst.add(100);
-		// bst.add(70);
-		// bst.add(74);
+		bst.add(50);
+		bst.add(25);
+		bst.add(35);
+		bst.add(20);
+		bst.add(75);
+		bst.add(100);
+		bst.add(70);
+		bst.add(74);
 	}
 }
