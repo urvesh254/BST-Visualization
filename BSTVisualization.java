@@ -10,7 +10,7 @@ public class BSTVisualization extends JFrame implements ActionListener, KeyListe
 	private Node root;
 
 	// private Color color;
-	private JPanel treePanel, infoPanel;
+	private JPanel topPanel, treePanel, infoPanel;
 	private JButton btnAdd, btnDelete;
 	private JTextField tf;
 	private int X = 300, Y = 75;
@@ -86,6 +86,8 @@ public class BSTVisualization extends JFrame implements ActionListener, KeyListe
 		Stack<Node> s = new Stack<>();
 		Node curr = root;
 		Points pts;
+		int offcet = 45;
+
 		while (!s.isEmpty() || curr != null) {
 			while (curr != null) {
 				s.push(curr);
@@ -94,7 +96,7 @@ public class BSTVisualization extends JFrame implements ActionListener, KeyListe
 			if (!s.isEmpty())
 				curr = s.pop();
 			pts = curr.p;
-			g2.drawLine(pts.x1 + 7, pts.y1 + 30, pts.x2 + 3, pts.y2 + 10);
+			g2.drawLine(pts.x1 + 7, pts.y1 + 30 + offcet, pts.x2 + 3, pts.y2 + 10 + offcet);
 			curr = curr.right;
 		}
 
@@ -115,46 +117,53 @@ public class BSTVisualization extends JFrame implements ActionListener, KeyListe
 		size = getBounds();
 		X = size.width / 2;
 
+		topPanel = new JPanel();
+		topPanel.setBorder(BorderFactory.createLineBorder(Color.black, 1));
+
 		treePanel = new JPanel(null);
-		treePanel.setPreferredSize(new Dimension(size.width, size.height - 200));
+		treePanel.setPreferredSize(new Dimension(size.width, size.height - 300));
+		treePanel.setBorder(BorderFactory.createLineBorder(Color.black, 1));
 
 		infoPanel = new JPanel();
 		infoPanel.setLayout(new BoxLayout(infoPanel, BoxLayout.Y_AXIS));
 		infoPanel.setPreferredSize(new Dimension(size.width, 200));
-		infoPanel.setBorder(BorderFactory.createLineBorder(Color.black, 3));
+		infoPanel.setBorder(BorderFactory.createLineBorder(Color.black, 1));
 
 		// Height of BST label
 		labelHeight = new JLabel("BST Height : ");
 		labelHeight.setFont(new Font("Calibri", Font.BOLD, 20));
-		labelHeight.setBounds(30, 20, 150, 30);
-		treePanel.add(labelHeight);
+		// labelHeight.setBounds(30, 20, 150, 30);
+		// labelHeight.setPreferredSize(new Dimension(150, 30));
+		topPanel.add(labelHeight);
 
 		// Height of BST answer
 		ansHeight = new JLabel("0");
 		ansHeight.setFont(new Font("Calibri", Font.BOLD, 20));
-		ansHeight.setBounds(135, 20, 50, 30);
-		treePanel.add(ansHeight);
+		// ansHeight.setBounds(135, 20, 50, 30);
+		ansHeight.setPreferredSize(new Dimension(50, 30));
+		topPanel.add(ansHeight);
 
 		//For geting data.
 		tf = new JTextField("");
 		tf.setFont(new Font("Arial", Font.BOLD, 20));
-		tf.setBounds(size.width - 300, 20, 150, 30);
+		// tf.setBounds(size.width - 300, 20, 150, 30);
+		tf.setPreferredSize(new Dimension(150, 30));
 		tf.addKeyListener(this);
-		treePanel.add(tf);
+		topPanel.add(tf);
 
 		//Add Button
 		btnAdd = new JButton("Add");
 		btnAdd.setFont(new Font("Arial", Font.BOLD, 20));
 		btnAdd.setBounds(size.width - 130, 20, 100, 30);
 		btnAdd.addActionListener(this);
-		treePanel.add(btnAdd);
+		topPanel.add(btnAdd);
 
 		//Delete Button
 		btnDelete = new JButton("Delete");
 		btnDelete.setFont(new Font("Arial", Font.BOLD, 20));
 		btnDelete.setBounds(size.width - 130, 60, 100, 30);
 		btnDelete.addActionListener(this);
-		treePanel.add(btnDelete);
+		topPanel.add(btnDelete);
 
 		// Inorder label
 		labelInorder = new JLabel("Inorder :");
@@ -196,6 +205,7 @@ public class BSTVisualization extends JFrame implements ActionListener, KeyListe
 
 		tf.requestFocusInWindow();
 
+		add(topPanel, BorderLayout.NORTH);
 		add(treePanel, BorderLayout.CENTER);
 		add(infoPanel, BorderLayout.SOUTH);
 
@@ -273,7 +283,7 @@ public class BSTVisualization extends JFrame implements ActionListener, KeyListe
 
 		if (root == null) {
 			root = newNode;
-			newNode.data.setBounds(600, 10, 40, 40);
+			newNode.data.setBounds(treePanel.getBounds().width / 2, 10, 40, 40);
 			newNode.p = new Points(0, 0, 0, 0);
 		} else {
 			Node curr = root, pre = root;
@@ -414,7 +424,7 @@ public class BSTVisualization extends JFrame implements ActionListener, KeyListe
 
 				curr.data = nextRoot.data;
 			}
-			reArrangeNode(root, root, getBounds().width / 2);
+			reArrangeNode(root, root, treePanel.getBounds().width / 2);
 		}
 
 		// Set all traversal and height of BST
