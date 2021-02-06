@@ -19,9 +19,13 @@ public class BSTVisualization extends JFrame implements ActionListener, KeyListe
 	private Rectangle size;
 	private JLabel labelInorder, labelPreorder, labelPostorder, labelHeight;
 	private JLabel ansInorder, ansPreorder, ansPostorder, ansHeight;
+	private FontMetrics fontMatrix;
 
 	//Node Structure
 	private static class Node {
+		static int TEXT_WIDTH = 40;
+		static int TEXT_HEIGHT = 40;
+
 		JLabel data;
 		Node left;
 		Node right;
@@ -101,7 +105,7 @@ public class BSTVisualization extends JFrame implements ActionListener, KeyListe
 	}
 
 	public BSTVisualization() {
-		// Initialize the frame. 
+		// Initialize the frame.
 		initialize();
 	}
 
@@ -276,10 +280,11 @@ public class BSTVisualization extends JFrame implements ActionListener, KeyListe
 	//Add element in BST.
 	public void add(int info) {
 		Node newNode = new Node(info);
+		int width = getWidth(newNode);
 
 		if (root == null) {
 			root = newNode;
-			newNode.data.setBounds(treePanel.getBounds().width / 2, 10, 40, 40);
+			newNode.data.setBounds(treePanel.getBounds().width / 2, 10, width, 40);
 			newNode.p = new Points(0, 0, 0, 0);
 		} else {
 			Node curr = root, pre = root;
@@ -298,19 +303,23 @@ public class BSTVisualization extends JFrame implements ActionListener, KeyListe
 				}
 				X /= 2;
 			}
+
 			currData = Integer.parseInt(pre.data.getText());
 			int x = pre.data.getX();
 			int y = pre.data.getY();
+			Dimension preDimension = pre.data.getSize();
+			Dimension currDimension = new Dimension(width, Node.TEXT_HEIGHT);
+
 			if (currData > info) {
 				pre.left = newNode;
-				newNode.data.setBounds(x - X, y + Y, 40, 40);
+				newNode.data.setBounds(x - X, y + Y, width, 40);
 				// x1=x;y1=y+20;x2=x-X+20;y2=y+Y+20;
-				newNode.p = new Points(x, y + 20, x - X + 20, y + Y + 20);
+				newNode.p = new Points(x, y + preDimension.height / 2, x - X + currDimension.width / 2, y + Y + currDimension.height / 2);
 			} else {
 				pre.right = newNode;
-				newNode.data.setBounds(x + X, y + Y, 40, 40);
+				newNode.data.setBounds(x + X, y + Y, width, 40);
 				// x1=x+40;y1=y+20;x2=x+X+20;y2=y+Y+20;
-				newNode.p = new Points(x + 40, y + 20, x + X + 20, y + Y + 20);
+				newNode.p = new Points(x + preDimension.width, y + preDimension.height / 2, x + X + currDimension.width / 2, y + Y + currDimension.height / 2);
 			}
 		}
 
@@ -444,6 +453,12 @@ public class BSTVisualization extends JFrame implements ActionListener, KeyListe
 		ansHeight.setText(height.root + "");
 	}
 
+	private int getWidth(Node node) {
+		fontMatrix = getFontMetrics(node.data.getFont());
+		int width = fontMatrix.stringWidth(node.data.getText());
+		return width < Node.TEXT_WIDTH ? Node.TEXT_WIDTH : (width + 5);
+	}
+
 	//Inorder logic
 	private String inorder(Node root) {
 		if (root == null)
@@ -485,19 +500,25 @@ public class BSTVisualization extends JFrame implements ActionListener, KeyListe
 		if (node == null)
 			return;
 
+		int width = getWidth(node);
+
 		if (root == node) {
-			node.data.setBounds(X, 10, 40, 40);
+			node.data.setBounds(X, 10, width, Node.TEXT_HEIGHT);
 		} else {
 			int x = pre.data.getX();
 			int y = pre.data.getY();
+			Dimension preDimension = pre.data.getSize();
+			Dimension currDimension = new Dimension(width, Node.TEXT_HEIGHT);
+
 			int preData = Integer.parseInt(pre.data.getText());
 			int nodeData = Integer.parseInt(node.data.getText());
 			if (nodeData < preData) {
-				node.data.setBounds(x - X, y + Y, 40, 40);
-				node.p = new Points(x, y + 20, x - X + 20, y + Y + 20);
+				node.data.setBounds(x - X, y + Y, width, Node.TEXT_HEIGHT);
+				node.p = new Points(x, y + preDimension.height / 2, x - X + currDimension.width / 2, y + Y + currDimension.height / 2);
 			} else {
-				node.data.setBounds(x + X, y + Y, 40, 40);
-				node.p = new Points(x + 40, y + 20, x + X + 20, y + Y + 20);
+				node.data.setBounds(x + X, y + Y, width, Node.TEXT_HEIGHT);
+				// node.p = new Points(x + 40, y + 20, x + X + 20, y + Y + 20);
+				node.p = new Points(x + preDimension.width, y + preDimension.height / 2, x + X + currDimension.width / 2, y + Y + currDimension.height / 2);
 			}
 		}
 
@@ -508,13 +529,13 @@ public class BSTVisualization extends JFrame implements ActionListener, KeyListe
 	public static void main(String arg[]) {
 		BSTVisualization bst = new BSTVisualization();
 
-		bst.add(50);
-		bst.add(25);
-		bst.add(35);
-		bst.add(20);
-		bst.add(75);
-		bst.add(100);
-		bst.add(70);
-		bst.add(74);
+		bst.add(500);
+		bst.add(250);
+		bst.add(350);
+		bst.add(200);
+		bst.add(750);
+		bst.add(1000);
+		bst.add(700);
+		bst.add(740);
 	}
 }
