@@ -30,7 +30,7 @@
 ## Prerequisite 
 -   For run **BST Vitalization** in you system you want to install some softwares.
 	 - [Java JDK ](https://www.oracle.com/in/java/technologies/javase-downloads.html "Java JDK") 	
-	 - IDE or Language editor
+	 - IDE or Language editor (Any one)
 		 - [Sublime Text](https://www.sublimetext.com/ "Sublime Text") 
 		 - [NetBeans](https://netbeans.org/ "NetBeans IDE")
 		 - [Atom](https://atom.io/ "Atom")
